@@ -1,0 +1,12 @@
+GEM
+  specs:
+    ostruct (0.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ostruct (~> 0.1.0)
+
+BUNDLED WITH
+   1.17.2
