@@ -1,12 +1,20 @@
 GEM
   specs:
+    mini_portile2 (2.4.0)
+    nokogiri (1.10.4)
+      mini_portile2 (~> 2.4.0)
     ostruct (0.1.0)
+    roo (2.8.2)
+      nokogiri (~> 1)
+      rubyzip (>= 1.2.1, < 2.0.0)
+    rubyzip (1.2.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   ostruct (~> 0.1.0)
+  roo (~> 2.8)
 
 BUNDLED WITH
    1.17.2
