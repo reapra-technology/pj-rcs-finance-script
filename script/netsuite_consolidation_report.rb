@@ -9,9 +9,7 @@ class NetsuiteConsolidationReport
   end
 
   def prerequisite
-    sheet_reader
     sheet_props.run
-
   end
 
   def run
