@@ -1,6 +1,4 @@
-require 'roo'
-
-module Sheet
+module Sheets
   class SheetReader
     attr_accessor :workbook, :filename
 
