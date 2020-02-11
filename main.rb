@@ -131,5 +131,5 @@ loader.eager_load
 input = 'input/Reapra_consolidation_FY2017_(dummy).xlsx'
 balance_sheet = 'BalanceSheet 15-8-19'
 # income_statement = 'IncomeStatement 15-8-19'
-NetsuiteConsolidationReport.new(input, balance_sheet).execute
+NetsuiteConsolidationReport.new(input, balance_sheet).prerequisite
 
