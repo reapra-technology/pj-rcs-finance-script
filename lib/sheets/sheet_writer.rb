@@ -2,11 +2,11 @@ module Sheets
   class SheetWriter
     include Util
 
-    attr_accessor :workbook, :filename, :worksheet
+    attr_accessor :workbook, :filename, :sheet_name, :worksheet
 
-    def initialize filename = ''
-      @filename = filename
-
+    def initialize filename = '', sheet_name
+      self.filename = filename
+      self.sheet_name = sheet_name
       read_file
       add_new_console_worksheet
     end
@@ -17,17 +17,13 @@ module Sheets
     end
 
     def add_new_console_worksheet
-      @worksheet = @workbook.add_worksheet "consol_" + filename
+      @worksheet = @workbook.add_worksheet "consol_" + sheet_name
     end
 
-    # https://github.com/weshatheleopard/rubyXL
-    def write
-      wb = xlsx_package.workbook
-      wb.add_worksheet(name: "Buttons") do |sheet|
-        @buttons.each do |button|
-          sheet.add_row [button.name, button.category, button.price]
-        end
-      end
+    def write data, coor, is_formula = false
+      is_formula ?
+        @worksheet.add_cell(coor.first, coor.last, '', data) :
+        @worksheet.add_cell(coor.first, coor.last, data)
     end
 
     def write_output
@@ -37,7 +33,9 @@ module Sheets
       # worksheet.add_cell(0,2,'', 'PI()/4')
       # worksheet.add_cell(1,2,'', 'PI()*4')
       # worksheet.add_cell(2,2,'', 'C1*C2')
-      @workbook.write("./output/#{filename}")
+      puts "Begin writing: #{Time.now}"
+      @workbook.write("./output/output.xlsx")
+      puts "End writing: #{Time.now}"
     end
   end
 end
