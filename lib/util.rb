@@ -4,7 +4,16 @@ module Util
     # A1 == [0, 0]
     # A5 == [4, 0]
     # AA5 == [4, 26]
-    return *RubyXL::Reference.ref2ind(x)
+    return RubyXL::Reference.ref2ind(x.upcase)
+  end
+
+  def get_coor_roo x = 'A1'
+    return RubyXL::Reference.ref2ind(x.upcase).map{|e| e+1}
+  end
+
+  def coor_roo2_coor_rubyxl coor = [0,0]
+    # [-1, -1]
+    coor.map{|e| e-1}
   end
 
   def excel_col_index str
