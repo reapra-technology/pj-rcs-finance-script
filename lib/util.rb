@@ -11,6 +11,11 @@ module Util
     return RubyXL::Reference.ref2ind(x.upcase).map{|e| e+1}
   end
 
+  def get_ref idx = [0,0]
+    # => A1
+    return RubyXL::Reference.ind2ref(*idx)
+  end
+
   def coor_roo2_coor_rubyxl coor = [0,0]
     # [-1, -1]
     coor.map{|e| e-1}
