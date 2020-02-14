@@ -1,8 +1,7 @@
 class NetsuiteConsolidationReport
   include Util
 
-  attr_accessor :input, :sheet_name,
-    :sheet_reader, :sheet_writer, :sheet_props
+  attr_accessor :input, :sheet_name
 
   def initialize input, sheet_name
     self.input = input
@@ -10,21 +9,13 @@ class NetsuiteConsolidationReport
   end
 
   def prerequisite
-    self.sheet_reader ||= Sheets::SheetReader.new input, sheet_name
-    self.sheet_writer ||= Sheets::SheetWriter.new input, sheet_name
-    self.sheet_props ||= Sheets::SheetProps.new get_sheet_read
-
     sheet_props.run
 
     self
   end
 
   def run
-    # sheet_writer.read_config sheet_props.segments
-    #
-    # sheet_writer.do_something
-    #
-    # sheet_writer.write_output
+    sheet_writer.write_output
   end
 
   def get_sheet_read
@@ -33,6 +24,10 @@ class NetsuiteConsolidationReport
 
   def get_sheet_write
     sheet_reader.workbook.sheet(result_sheet_name)
+  end
+
+  def get_segments
+    sheet_props.segments
   end
 
   def clone_entities
@@ -54,6 +49,22 @@ class NetsuiteConsolidationReport
   end
 
   private
+    def sheet_reader
+      @sheet_reader ||= Sheets::SheetReader.new input, sheet_name
+    end
+
+    def sheet_writer
+      @sheet_writer ||= Sheets::SheetWriter.new input, sheet_name
+    end
+
+    def sheet_props
+      @sheet_props ||= Sheets::SheetProps.new get_sheet_read
+    end
+
+    def get_segments
+      @segments ||= sheet_props.segments
+    end
+
     def result_sheet_name
       "consol" + "_" + sheet_name
     end
