@@ -27,7 +27,7 @@ module Sheets
           end
         }
 
-        self.segments = res.map{|x| [col.find_index(x.first) + 1, col.find_index(x.last).nil? ? nil : col.find_index(x.last) + 1]}
+        self.segments = res.map{|x| Range.new(col.find_index(x.first) + 1, col.find_index(x.last).nil? ? col.find_index(x.first) + 1 : col.find_index(x.last) + 1)}
       end
 
       def get_coordinates
