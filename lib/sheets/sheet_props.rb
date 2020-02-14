@@ -5,7 +5,8 @@ module Sheets
     attr_accessor :sheet, :segments,
       :left, :left_col, :left_row,
       :right, :right_col, :right_row,
-      :z_elim_index, :z_elim_col
+      :z_elim_index, :z_elim_col,
+      :locked_full_coor
 
     def initialize sheet
       self.sheet = sheet
@@ -50,6 +51,11 @@ module Sheets
 
         self.z_elim_index = sheet.row(7).find_index{|x| x.start_with? 'z-Elim'} + 1
         self.z_elim_col = column_name z_elim_index
+
+        self.locked_full_coor = [
+          left.map{|e| "$#{e.to_s.upcase}" }.join,
+          right.map{|e| "$#{e.to_s.upcase}" }.join
+        ].join(":")
       end
 
       def match_group_segment? str
