@@ -143,8 +143,14 @@ class NetsuiteConsolidationReport
       data = "Total (non-elim + revised CJE)"
     elsif row_in_segment? x
       is_formula = true
-      revised_column_ref = "#{column_name(y+7)}#{x}"
-      data = "=SUM(B#{x}:#{column_name(sheet_props.z_elim_index-1)}#{x}) + #{revised_column_ref}"
+      if last_of_segment? x
+        col = "#{column_name(y+9)}"
+        r = last_of_segment? x
+        data = "=SUM(#{col}#{r.first + 1}:#{col}#{r.last - 1})"
+      else
+        revised_column_ref = "#{column_name(y+7)}#{x}"
+        data = "=SUM(B#{x}:#{column_name(sheet_props.z_elim_index-1)}#{x}) + #{revised_column_ref}"
+      end
     else
       is_formula = false
       data = nil
@@ -185,6 +191,13 @@ class NetsuiteConsolidationReport
     def row_in_segment? x
       get_segments.each {|r|
         return true if r.include? x
+      }
+      false
+    end
+
+    def last_of_segment? x
+      get_segments.each {|r|
+        return r if r.last == x
       }
       false
     end
