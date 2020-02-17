@@ -6,14 +6,19 @@ module Sheets
       :left, :left_col, :left_row,
       :right, :right_col, :right_row,
       :z_elim_index, :z_elim_col,
-      :locked_full_coor
+      :locked_full_coor,
+      :cje_sheet, :cje_sheet_left_col, :cje_sheet_left_row,
+      :cje_sheet_right_col, :cje_sheet_right_row,
+      :cje_locked_full_coor
 
-    def initialize sheet
+    def initialize sheet, cje_sheet = nil
       self.sheet = sheet
+      self.cje_sheet = cje_sheet
     end
 
     def run
       get_coordinates
+      get_cje_coordinates if cje_sheet
       get_segments
     end
 
@@ -56,6 +61,23 @@ module Sheets
           left.map{|e| "$#{e.to_s.upcase}" }.join,
           right.map{|e| "$#{e.to_s.upcase}" }.join
         ].join(":")
+      end
+
+      def get_cje_coordinates
+        cje_sheet.each_with_index {|r, i|
+          row_index = i + 1
+          if r.include?("BALANCE SHEET") && r.include?("P/L")
+            self.cje_sheet_left_row = row_index
+            break
+          end
+        }
+
+        self.cje_sheet_right_col = column_name(cje_sheet.row(self.cje_sheet_left_row).length-1)
+        self.cje_sheet_left_col = column_name(
+          cje_sheet.row(cje_sheet_left_row).find_index{|x| x =~ /^\d\d\d\-\d\d\d\-/} + 1
+        )
+        self.cje_sheet_right_row = cje_sheet.last_row
+        self.cje_locked_full_coor = "$#{cje_sheet_left_col}$#{cje_sheet_left_row}:$#{cje_sheet_right_col}$#{cje_sheet_right_row}"
       end
 
       def match_group_segment? str

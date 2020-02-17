@@ -35,4 +35,12 @@ module Util
     (int - 1).times { name.succ! }
     name
   end
+
+  module Roo
+    module Excelx
+      def read coor
+        self.cell(*coor)
+      end
+    end
+  end
 end
