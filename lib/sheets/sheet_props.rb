@@ -66,9 +66,12 @@ module Sheets
       def get_cje_coordinates
         cje_sheet.each_with_index {|r, i|
           row_index = i + 1
-          if r.include?("BALANCE SHEET") && r.include?("P/L")
+          if self.cje_sheet_left_row.nil? && r.include?("BALANCE SHEET") && r.include?("P/L")
             self.cje_sheet_left_row = row_index
-            break
+          end
+
+          if self.cje_sheet_right_row.nil? && r.first && r.first.to_s.upcase == "SUM"
+            self.cje_sheet_right_row = row_index
           end
         }
 
@@ -76,7 +79,6 @@ module Sheets
         self.cje_sheet_left_col = column_name(
           cje_sheet.row(cje_sheet_left_row).find_index{|x| x =~ /^\d\d\d\-\d\d\d\-/} + 1
         )
-        self.cje_sheet_right_row = cje_sheet.last_row
         self.cje_locked_full_coor = "$#{cje_sheet_left_col}$#{cje_sheet_left_row}:$#{cje_sheet_right_col}$#{cje_sheet_right_row}"
       end
 
