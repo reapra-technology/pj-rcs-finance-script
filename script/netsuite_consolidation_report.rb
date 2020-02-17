@@ -85,21 +85,22 @@ class NetsuiteConsolidationReport
   end
 
   def apply_vlookup_formulas x,y
-    get_segments.each {|r|
-      if r.include? x
+    if row_in_segment? x
         data = "VLOOKUP(A#{x},\'#{sheet_name}\'!#{sheet_props.locked_full_coor},#{y},FALSE)"
         sheet_writer.write data, coor_roo2_coor_rubyxl([x,y]), true
-      end
-    }
+    end
   end
 
   def make_total x,y
     is_formula = false
     if x == (get_coor_roo(sheet_props.left.join)).first
       data = "Total"
-    else
+    elsif row_in_segment? x
       is_formula = true
       data = "SUM(B#{x}:#{column_name(y-1)}#{x})"
+    else
+      is_formula = false
+      data = nil
     end
 
     sheet_writer.write data, coor_roo2_coor_rubyxl([x,y]), is_formula
@@ -109,9 +110,12 @@ class NetsuiteConsolidationReport
     is_formula = false
     if x == (get_coor_roo(sheet_props.left.join)).first
       data = "Total Elim"
-    else
+    elsif row_in_segment? x
       is_formula = true
       data = "SUM(#{sheet_props.z_elim_col}#{x}:#{column_name(y-1)}#{x})"
+    else
+      is_formula = false
+      data = nil
     end
 
     sheet_writer.write data, coor_roo2_coor_rubyxl([x,y+4]), is_formula
@@ -121,10 +125,13 @@ class NetsuiteConsolidationReport
     is_formula = false
     if x == (get_coor_roo(sheet_props.left.join)).first
       data = "Revised CJE (debit/ credit)"
-    else
+    elsif row_in_segment? x
       is_formula = true
       row_index_num = sheet_props.cje_sheet_right_row - sheet_props.cje_sheet_left_row + 1
-      data = "=IFNA(HLOOKUP(A#{x},#{cje_sheet}!#{sheet_props.cje_locked_full_coor},#{row_index_num},FALSE),\"\")"
+      data = "=HLOOKUP(A#{x},#{cje_sheet}!#{sheet_props.cje_locked_full_coor},#{row_index_num},FALSE)"
+    else
+      is_formula = false
+      data = nil
     end
 
     sheet_writer.write data, coor_roo2_coor_rubyxl([x,y+7]), is_formula
@@ -134,10 +141,13 @@ class NetsuiteConsolidationReport
     is_formula = false
     if x == (get_coor_roo(sheet_props.left.join)).first
       data = "Total (non-elim + revised CJE)"
-    else
+    elsif row_in_segment? x
       is_formula = true
       revised_column_ref = "#{column_name(y+7)}#{x}"
-      data = "=IFNA(SUM(B#{x}:#{column_name(sheet_props.z_elim_index-1)}#{x}) + #{revised_column_ref},\"\")"
+      data = "=SUM(B#{x}:#{column_name(sheet_props.z_elim_index-1)}#{x}) + #{revised_column_ref}"
+    else
+      is_formula = false
+      data = nil
     end
 
     sheet_writer.write data, coor_roo2_coor_rubyxl([x,y+9]), is_formula
@@ -170,5 +180,12 @@ class NetsuiteConsolidationReport
 
     def result_sheet_name
       "consol" + "_" + sheet_name
+    end
+
+    def row_in_segment? x
+      get_segments.each {|r|
+        return true if r.include? x
+      }
+      false
     end
 end
