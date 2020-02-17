@@ -73,6 +73,10 @@ class NetsuiteConsolidationReport
         # amplify
         make_total x, y
         make_total_elim x, y
+        make_revised_cje x, y
+        make_total_non_elim_plus_revised_cje x, y
+        make_amplify_fs_left x,y
+        make_amplify_fs_right x,y
       end
 
       x +=1
@@ -111,6 +115,40 @@ class NetsuiteConsolidationReport
     end
 
     sheet_writer.write data, coor_roo2_coor_rubyxl([x,y+4]), is_formula
+  end
+
+  def make_revised_cje x, y
+    is_formula = false
+    if x == (get_coor_roo(sheet_props.left.join)).first
+      data = "Revised CJE (debit/ credit)"
+    else
+      is_formula = true
+      row_index_num = sheet_props.cje_sheet_right_row - sheet_props.cje_sheet_left_row + 1
+      data = "=IFNA(HLOOKUP(A#{x},#{cje_sheet}!#{sheet_props.cje_locked_full_coor},#{row_index_num},FALSE),\"\")"
+    end
+
+    sheet_writer.write data, coor_roo2_coor_rubyxl([x,y+7]), is_formula
+  end
+
+  def make_total_non_elim_plus_revised_cje x, y
+    is_formula = false
+    if x == (get_coor_roo(sheet_props.left.join)).first
+      data = "Total (non-elim + revised CJE)"
+    else
+      is_formula = true
+      revised_column_ref = "#{column_name(y+7)}#{x}"
+      data = "=IFNA(SUM(B#{x}:#{column_name(sheet_props.z_elim_index-1)}#{x}) + #{revised_column_ref},\"\")"
+    end
+
+    sheet_writer.write data, coor_roo2_coor_rubyxl([x,y+9]), is_formula
+  end
+
+  def make_amplify_fs_left x,y
+
+  end
+
+  def make_amplify_fs_right x,y
+
   end
 
   private
