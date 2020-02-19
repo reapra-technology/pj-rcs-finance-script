@@ -11,6 +11,9 @@ module Sheets
       :cje_sheet_right_col, :cje_sheet_right_row,
       :cje_locked_full_coor
 
+    PL_GROUP_SEGMENTS = ["Sales", "Purchases", "Unrealized Matching Gain/Loss"]
+    BS_GROUP_SEGMENTS = ["VAT on Sales BD", "Cumulative Translation Adjustment-Elimination", "Retained Earnings", "Cumulative Translation Adjustment"]
+
     def initialize sheet, cje_sheet = nil
       self.sheet = sheet
       self.cje_sheet = cje_sheet
@@ -83,11 +86,11 @@ module Sheets
       end
 
       def match_group_segment? str
-        !(str =~ /^\d\d\d\-\d\d\d\s\-/).nil?
+        !!(str =~ /^\d\d\d\-\d\d\d\s\-/ || (BS_GROUP_SEGMENTS + PL_GROUP_SEGMENTS).include?(str.to_s))
       end
 
       def match_child_segment? str
-        !(str =~ /^\d\d\d\-\d\d\d\-\d\d\d/).nil?
+        !!((str =~ /^\d\d\d\-\d\d\d\-\d\d\d/) || (str =~ /^\d\d\d\-\d\d\d\-\d\d\s\-/))
       end
   end
 end
