@@ -3,8 +3,9 @@ class NetsuiteConsolidationReport
 
   attr_accessor :input, :sheet_name, :bs_sheet, :is_sheet, :cje_sheet, :verbose
 
-  def initialize input, bs_sheet = nil, is_sheet = nil, cje_sheet = nil, verbose = false
+  def initialize input, output = nil, bs_sheet = nil, is_sheet = nil, cje_sheet = nil, verbose = false
     self.input = input
+    self.output = output
     self.bs_sheet = bs_sheet
     self.is_sheet = is_sheet
     self.cje_sheet = cje_sheet
@@ -21,7 +22,9 @@ class NetsuiteConsolidationReport
   end
 
   def run
-    sheet_writer.write_output
+    puts "Begin writing: #{Time.now}"
+    sheet_writer.write_output output
+    puts "End writing: #{Time.now}"
   end
 
   def get_sheet_read

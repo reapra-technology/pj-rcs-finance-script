@@ -151,7 +151,7 @@ if options[:process].include? "cje"
 end
 
 if options[:process].include?("bs") || options[:p].include?("is")
-  ns = NetsuiteConsolidationReport.new(options[:input], options[:bs], options[:is], options[:cje], options[:v]).prerequisite
+  ns = NetsuiteConsolidationReport.new(options[:input], options[:output], options[:bs], options[:is], options[:cje], options[:v]).prerequisite
   ns.clone_entities_with_ref_formulas
   ns.run
 

@@ -21,10 +21,8 @@ module Sheets
         sheet.add_cell(coor.first, coor.last, data)
     end
 
-    def write_output
-      puts "Begin writing: #{Time.now}"
-      @workbook.write("./output/output.xlsx")
-      puts "End writing: #{Time.now}"
+    def write_output output = nil
+      @workbook.write(output || "./output/output.xlsx")
     end
 
     private
