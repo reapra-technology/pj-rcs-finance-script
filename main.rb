@@ -138,19 +138,19 @@ pp options
 
 # check required arguments
 raise OptionParser::MissingArgument.new("input") if options[:input].nil?
-raise OptionParser::MissingArgument.new("bs") if options[:bs].nil? && options[:p].include?("bs")
-raise OptionParser::MissingArgument.new("is") if options[:is].nil? && options[:p].include?("is")
-raise OptionParser::MissingArgument.new("process cje require both balancesheet and incomestatement to be listed") if (options[:is].nil? || options[:bs].nil?) && options[:p].include?("cje")
-raise OptionParser::MissingArgument.new("no process defined to run") if options[:p].empty?
+raise OptionParser::MissingArgument.new("bs") if options[:bs].nil? && options[:process].include?("bs")
+raise OptionParser::MissingArgument.new("is") if options[:is].nil? && options[:process].include?("is")
+raise OptionParser::MissingArgument.new("process cje require both balancesheet and incomestatement to be listed") if (options[:is].nil? || options[:bs].nil?) && options[:process].include?("cje")
+raise OptionParser::MissingArgument.new("no process defined to run") if options[:process].empty?
 
 # FIXME refactor if below to be switch case
-if options[:p].include? "cje"
+if options[:process].include? "cje"
   NetsuiteConsolidationReportCjeBuilder.new(options[:input], options[:bs], options[:is], options[:cje], options[:v]).build_cje_sheet
 
   return
 end
 
-if options[:p].include?("bs") || options[:p].include?("is")
+if options[:process].include?("bs") || options[:p].include?("is")
   ns = NetsuiteConsolidationReport.new(options[:input], options[:bs], options[:is], options[:cje], options[:v]).prerequisite
   ns.clone_entities_with_ref_formulas
   ns.run
