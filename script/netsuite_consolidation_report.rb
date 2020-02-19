@@ -1,19 +1,23 @@
 class NetsuiteConsolidationReport
   include Util
 
-  attr_accessor :input, :sheet_name, :cje_sheet, :verbose
+  attr_accessor :input, :sheet_name, :bs_sheet, :is_sheet, :cje_sheet, :verbose
 
-  def initialize input, sheet_name, cje_sheet = nil, verbose = false
+  def initialize input, bs_sheet = nil, is_sheet = nil, cje_sheet = nil, verbose = false
     self.input = input
-    self.sheet_name = sheet_name
+    self.bs_sheet = bs_sheet
+    self.is_sheet = is_sheet
     self.cje_sheet = cje_sheet
     self.verbose = verbose
   end
 
   def prerequisite
-    sheet_props.run
+    [bs_sheet, is_sheet].compact.each do |sheet_name|
+      self.sheet_name = sheet_name
+      sheet_props.run
 
-    self
+      destroy_sheet_props
+    end
   end
 
   def run
@@ -201,5 +205,9 @@ class NetsuiteConsolidationReport
         return r if r.last == x && get_sheet_read.cell("A",x).start_with?("Total")
       }
       false
+    end
+
+    def destroy_sheet_props
+      @sheet_props = nil
     end
 end
