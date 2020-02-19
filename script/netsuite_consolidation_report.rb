@@ -1,12 +1,13 @@
 class NetsuiteConsolidationReport
   include Util
 
-  attr_accessor :input, :sheet_name, :cje_sheet
+  attr_accessor :input, :sheet_name, :cje_sheet, :verbose
 
-  def initialize input, sheet_name, cje_sheet = nil
+  def initialize input, sheet_name, cje_sheet = nil, verbose = false
     self.input = input
     self.sheet_name = sheet_name
     self.cje_sheet = cje_sheet
+    self.verbose = verbose
   end
 
   def prerequisite
