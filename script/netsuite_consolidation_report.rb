@@ -1,7 +1,7 @@
 class NetsuiteConsolidationReport
   include Util
 
-  attr_accessor :input, :sheet_name, :bs_sheet, :is_sheet, :cje_sheet, :verbose
+  attr_accessor :input, :output, :sheet_name, :bs_sheet, :is_sheet, :cje_sheet, :verbose
 
   def initialize input, output = nil, bs_sheet = nil, is_sheet = nil, cje_sheet = nil, verbose = false
     self.input = input
@@ -15,13 +15,16 @@ class NetsuiteConsolidationReport
   def prerequisite
     [bs_sheet, is_sheet].compact.each do |sheet_name|
       self.sheet_name = sheet_name
+      puts "Consolidation Report Processing: #{sheet_name}"
+
       sheet_props.run
+      clone_entities_with_ref_formulas
 
       destroy_sheet_props
     end
   end
 
-  def run
+  def save_file
     puts "Begin writing: #{Time.now}"
     sheet_writer.write_output output
     puts "End writing: #{Time.now}"
