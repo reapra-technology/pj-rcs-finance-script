@@ -212,7 +212,7 @@ class NetsuiteConsolidationReport
 
     def last_of_segment_and_is_total? x
       get_segments.each {|r|
-        return r if r.last == x && get_sheet_read.cell("A",x).start_with?("Total")
+        return r if r.last == x && get_sheet_read.cell("A",x).to_s.start_with?("Total")
       }
       false
     end
