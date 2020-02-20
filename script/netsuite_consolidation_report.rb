@@ -1,7 +1,7 @@
 class NetsuiteConsolidationReport
   include Util
 
-  attr_accessor :input, :output, :sheet_name, :bs_sheet, :is_sheet, :cje_sheet, :verbose
+  attr_accessor :input, :output, :sheet_name, :bs_sheet, :is_sheet, :cje_sheet, :verbose, :zache
 
   def initialize input, output = nil, bs_sheet = nil, is_sheet = nil, cje_sheet = nil, verbose = false
     self.input = input
@@ -10,6 +10,8 @@ class NetsuiteConsolidationReport
     self.is_sheet = is_sheet
     self.cje_sheet = cje_sheet
     self.verbose = verbose
+
+    self.zache = Zache.new
   end
 
   def prerequisite
@@ -31,7 +33,9 @@ class NetsuiteConsolidationReport
   end
 
   def get_sheet_read
-    sheet_reader.workbook.sheet(sheet_name).clone
+    zache.get("get_sheet_read_#{sheet_name}", lifetime: 5 * 60) {
+      sheet_reader.workbook.sheet(sheet_name).clone
+    }
   end
 
   def get_sheet_cje_read

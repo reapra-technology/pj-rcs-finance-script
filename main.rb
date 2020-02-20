@@ -9,6 +9,8 @@ require 'roo'
 require 'pry'
 require 'pry-byebug'
 
+require 'zache'
+
 # Begin autoloading
 require 'zeitwerk'
 require 'listen'
