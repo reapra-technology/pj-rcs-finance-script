@@ -1,4 +1,7 @@
 module Util
+
+  PL_GROUP_SEGMENTS = ["Sales", "Purchases", "Unrealized Matching Gain/Loss"]
+  BS_GROUP_SEGMENTS = ["VAT on Sales BD", "Cumulative Translation Adjustment-Elimination", "Retained Earnings", "Cumulative Translation Adjustment"]
   # [x, y]
   def get_coor x = 'A1'
     # A1 == [0, 0]
@@ -34,6 +37,14 @@ module Util
     name = 'A'
     (int - 1).times { name.succ! }
     name
+  end
+
+  def match_group_segment? str
+    !!(str =~ /^\d\d\d\-\d\d\d\s\-/ || (BS_GROUP_SEGMENTS + PL_GROUP_SEGMENTS).include?(str.to_s))
+  end
+
+  def match_child_segment? str
+    !!((str =~ /^\d\d\d\-\d\d\d\-\d\d\d/) || (str =~ /^\d\d\d\-\d\d\d\-\d\d\s\-/))
   end
 
   module Roo
