@@ -148,7 +148,9 @@ raise OptionParser::MissingArgument.new("no process defined to run") if options[
 
 # FIXME refactor if below to be switch case
 if options[:process].include? "cje"
-  NetsuiteConsolidationReportCjeBuilder.new(options[:input], options[:bs], options[:is], options[:cje], options[:v]).build_cje_sheet
+  ns = NetsuiteConsolidationReportCjeBuilder.new(options[:input], options[:output], options[:bs], options[:is], options[:cje], options[:v])
+  ns.build_cje_sheet
+  ns.save_file
 
   return
 end
