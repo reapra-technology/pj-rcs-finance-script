@@ -56,7 +56,7 @@ class NetsuiteConsolidationReport
       y = left.last
       while y < right.last do
        data = sheet.read [x,y]
-       sheet_writer.write sheet_name, data, coor_roo2_coor_rubyxl([x,y])
+       sheet_writer.write result_sheet_name, data, coor_roo2_coor_rubyxl([x,y])
        y += 1
       end
       x +=1
@@ -77,7 +77,7 @@ class NetsuiteConsolidationReport
       while y < right.last do
         if x == left.first || y == left.last
           data = "\'#{sheet_name}\'!#{get_ref(coor_roo2_coor_rubyxl([x,y]))}"
-          sheet_writer.write sheet_name, data, coor_roo2_coor_rubyxl([x,y]), is_formula
+          sheet_writer.write result_sheet_name, data, coor_roo2_coor_rubyxl([x,y]), is_formula
         else
           apply_vlookup_formulas x, y
         end
@@ -102,7 +102,7 @@ class NetsuiteConsolidationReport
   def apply_vlookup_formulas x,y
     if row_in_segment? x
         data = "VLOOKUP(A#{x},\'#{sheet_name}\'!#{sheet_props.locked_full_coor},#{y},FALSE)"
-        sheet_writer.write sheet_name, data, coor_roo2_coor_rubyxl([x,y]), true
+        sheet_writer.write result_sheet_name, data, coor_roo2_coor_rubyxl([x,y]), true
     end
   end
 
@@ -118,7 +118,7 @@ class NetsuiteConsolidationReport
       data = nil
     end
 
-    sheet_writer.write sheet_name, data, coor_roo2_coor_rubyxl([x,y]), is_formula
+    sheet_writer.write result_sheet_name, data, coor_roo2_coor_rubyxl([x,y]), is_formula
   end
 
   def make_total_elim x,y
@@ -133,7 +133,7 @@ class NetsuiteConsolidationReport
       data = nil
     end
 
-    sheet_writer.write sheet_name, data, coor_roo2_coor_rubyxl([x,y+4]), is_formula
+    sheet_writer.write result_sheet_name, data, coor_roo2_coor_rubyxl([x,y+4]), is_formula
   end
 
   def make_revised_cje x, y
@@ -149,7 +149,7 @@ class NetsuiteConsolidationReport
       data = nil
     end
 
-    sheet_writer.write sheet_name, data, coor_roo2_coor_rubyxl([x,y+7]), is_formula
+    sheet_writer.write result_sheet_name, data, coor_roo2_coor_rubyxl([x,y+7]), is_formula
   end
 
   def make_total_non_elim_plus_revised_cje x, y
@@ -171,7 +171,7 @@ class NetsuiteConsolidationReport
       data = nil
     end
 
-    sheet_writer.write sheet_name, data, coor_roo2_coor_rubyxl([x,y+9]), is_formula
+    sheet_writer.write result_sheet_name, data, coor_roo2_coor_rubyxl([x,y+9]), is_formula
   end
 
   def make_amplify_fs_left x,y

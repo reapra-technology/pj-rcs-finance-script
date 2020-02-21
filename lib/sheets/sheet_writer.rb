@@ -26,9 +26,8 @@ module Sheets
     end
 
     private
-
       def worksheet sheet_name
-        @workbook["consol_" + sheet_name] || @workbook.add_worksheet("consol_" + sheet_name)
+        @workbook[sheet_name] || @workbook.add_worksheet(sheet_name)
       end
   end
 end
