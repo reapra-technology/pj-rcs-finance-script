@@ -25,6 +25,14 @@ module Sheets
       @workbook.write(output || "./output/output.xlsx")
     end
 
+    def merge_cells sheet_name, left_row, left_col, right_row, right_col
+      worksheet(sheet_name).merge_cells left_row, left_col, right_row, right_col
+    end
+
+    def sheet_data_at sheet_name, x, y
+      worksheet(sheet_name)[x][y]
+    end
+
     private
       def worksheet sheet_name
         @workbook[sheet_name] || @workbook.add_worksheet(sheet_name)
