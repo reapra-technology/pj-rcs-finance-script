@@ -118,7 +118,7 @@ class OptParser
       opts.on_tail("--example", "Show example command line"
         ) do
         puts "---- TO GENERATE CJE ----"
-        puts "bundle exec ruby main.rb -i 'input/consolidation.xlsx' -o 'output/new_consolidation.xlsx' -p cje --cje=CJE"
+        puts "bundle exec ruby main.rb -i 'input/consolidation.xlsx' -o 'output/new_consolidation.xlsx' -p cje --balancesheet='BalanceSheet 15-8-19' --incomestatement='IncomeStatement 15-8-19' --cje=CJE"
         puts
         puts "---- TO GENERATE CONSOLIDATION REPORTS ----"
         puts "bundle exec ruby main.rb -i 'input/consolidation.xlsx' -o 'output/new_consolidation.xlsx' -p bs,is --balancesheet='BalanceSheet 15-8-19' --incomestatement='IncomeStatement 15-8-19' --cje=CJE"
